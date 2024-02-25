@@ -13,7 +13,7 @@ namespace ShapesApp
             this.name = name;
         }
 
-        
+
 
         // Abstract method to calculate area
         public abstract double GetArea();
@@ -24,6 +24,6 @@ namespace ShapesApp
             return name;
         }
 
-       
+
     }
 }

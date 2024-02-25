@@ -1,6 +1,7 @@
 using static System.Windows.Forms.LinkLabel;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using Timer = System.Windows.Forms.Timer;
 
 
 namespace ShapesApp
@@ -34,14 +35,16 @@ namespace ShapesApp
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             splitContainer1 = new SplitContainer();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
             Square = new PictureBox();
             Triangle = new PictureBox();
             Rectangle = new PictureBox();
             Circle = new PictureBox();
             Line = new PictureBox();
             splitContainer2 = new SplitContainer();
+            RefreshStatusLabel = new Label();
+            refresh_button = new Button();
+            info_button = new Button();
+            draw_button = new Button();
             infoList = new ListBox();
             listBoxShapes = new ListBox();
             richTextBox1 = new RichTextBox();
@@ -70,8 +73,6 @@ namespace ShapesApp
             // splitContainer1.Panel1
             // 
             splitContainer1.Panel1.BackColor = Color.White;
-            splitContainer1.Panel1.Controls.Add(radioButton2);
-            splitContainer1.Panel1.Controls.Add(radioButton1);
             splitContainer1.Panel1.Controls.Add(Square);
             splitContainer1.Panel1.Controls.Add(Triangle);
             splitContainer1.Panel1.Controls.Add(Rectangle);
@@ -86,34 +87,10 @@ namespace ShapesApp
             splitContainer1.SplitterDistance = 242;
             splitContainer1.TabIndex = 0;
             // 
-            // radioButton2
-            // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(22, 48);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(99, 24);
-            radioButton2.TabIndex = 6;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "Info Mode";
-            radioButton2.UseVisualStyleBackColor = true;
-            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(22, 19);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(108, 24);
-            radioButton1.TabIndex = 5;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "Draw Mode";
-            radioButton1.UseVisualStyleBackColor = true;
-            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
-            // 
             // Square
             // 
             Square.Image = Properties.Resources.square;
-            Square.Location = new Point(12, 309);
+            Square.Location = new Point(12, 248);
             Square.Name = "Square";
             Square.Size = new Size(84, 83);
             Square.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -124,7 +101,7 @@ namespace ShapesApp
             // Triangle
             // 
             Triangle.Image = Properties.Resources.triangle;
-            Triangle.Location = new Point(102, 201);
+            Triangle.Location = new Point(102, 144);
             Triangle.Name = "Triangle";
             Triangle.Size = new Size(97, 81);
             Triangle.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -135,7 +112,7 @@ namespace ShapesApp
             // Rectangle
             // 
             Rectangle.Image = Properties.Resources.rectangle;
-            Rectangle.Location = new Point(12, 201);
+            Rectangle.Location = new Point(12, 144);
             Rectangle.Name = "Rectangle";
             Rectangle.Size = new Size(84, 81);
             Rectangle.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -146,7 +123,7 @@ namespace ShapesApp
             // Circle
             // 
             Circle.Image = Properties.Resources.circle;
-            Circle.Location = new Point(102, 92);
+            Circle.Location = new Point(102, 41);
             Circle.Name = "Circle";
             Circle.Size = new Size(97, 82);
             Circle.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -157,7 +134,7 @@ namespace ShapesApp
             // Line
             // 
             Line.Image = Properties.Resources.line;
-            Line.Location = new Point(12, 92);
+            Line.Location = new Point(12, 41);
             Line.Name = "Line";
             Line.Size = new Size(84, 82);
             Line.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -174,6 +151,10 @@ namespace ShapesApp
             // splitContainer2.Panel1
             // 
             splitContainer2.Panel1.BackColor = SystemColors.ControlLightLight;
+            splitContainer2.Panel1.Controls.Add(RefreshStatusLabel);
+            splitContainer2.Panel1.Controls.Add(refresh_button);
+            splitContainer2.Panel1.Controls.Add(info_button);
+            splitContainer2.Panel1.Controls.Add(draw_button);
             splitContainer2.Panel1.Controls.Add(infoList);
             splitContainer2.Panel1.Paint += splitContainer2_Panel1_Paint;
             // 
@@ -186,13 +167,59 @@ namespace ShapesApp
             splitContainer2.SplitterDistance = 841;
             splitContainer2.TabIndex = 0;
             // 
+            // RefreshStatusLabel
+            // 
+            RefreshStatusLabel.AutoSize = true;
+            RefreshStatusLabel.Location = new Point(210, 155);
+            RefreshStatusLabel.Name = "RefreshStatusLabel";
+            RefreshStatusLabel.Size = new Size(88, 20);
+            RefreshStatusLabel.TabIndex = 6;
+            RefreshStatusLabel.Text = "Refreshing...";
+            RefreshStatusLabel.Visible = false;
+            RefreshStatusLabel.Click += label1_Click;
+            // 
+            // refresh_button
+            // 
+            refresh_button.BackColor = SystemColors.ButtonShadow;
+            refresh_button.Location = new Point(414, 0);
+            refresh_button.Name = "refresh_button";
+            refresh_button.Size = new Size(120, 43);
+            refresh_button.TabIndex = 5;
+            refresh_button.Text = "Refresh";
+            refresh_button.UseVisualStyleBackColor = false;
+            refresh_button.Visible = false;
+            refresh_button.Click += refresh_button_Click;
+            // 
+            // info_button
+            // 
+            info_button.BackColor = SystemColors.GradientInactiveCaption;
+            info_button.Location = new Point(118, 3);
+            info_button.Name = "info_button";
+            info_button.Size = new Size(106, 40);
+            info_button.TabIndex = 3;
+            info_button.Text = "Info Mode";
+            info_button.UseVisualStyleBackColor = false;
+            info_button.Click += button2_Click;
+            // 
+            // draw_button
+            // 
+            draw_button.BackColor = SystemColors.GradientActiveCaption;
+            draw_button.Location = new Point(3, 3);
+            draw_button.Name = "draw_button";
+            draw_button.Size = new Size(109, 40);
+            draw_button.TabIndex = 2;
+            draw_button.Text = "Draw Mode";
+            draw_button.UseVisualStyleBackColor = false;
+            draw_button.Click += button1_Click;
+            // 
             // infoList
             // 
             infoList.FormattingEnabled = true;
-            infoList.Location = new Point(3, 0);
+            infoList.Location = new Point(3, 41);
             infoList.Name = "infoList";
-            infoList.Size = new Size(835, 564);
+            infoList.Size = new Size(835, 504);
             infoList.TabIndex = 1;
+            infoList.Visible = false;
             infoList.SelectedIndexChanged += infoList_SelectedIndexChanged;
             // 
             // listBoxShapes
@@ -233,7 +260,6 @@ namespace ShapesApp
             Name = "Form1";
             Load += Form1_Load_1;
             splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
@@ -243,6 +269,7 @@ namespace ShapesApp
             ((System.ComponentModel.ISupportInitialize)Circle).EndInit();
             ((System.ComponentModel.ISupportInitialize)Line).EndInit();
             splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel1.PerformLayout();
             splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
@@ -361,12 +388,12 @@ namespace ShapesApp
             shapeInfoList.Add(shapeInfo);
 
             // Update the shape list
-            updateListOfShapes(uniqueName);
-        
-        
-    }
+            updateListOfShapes();
 
-    private void updateListOfShapes(String uniqueName)
+
+        }
+
+        private void updateListOfShapes()
         {
             // Clear existing items
             listBoxShapes.Items.Clear();
@@ -413,7 +440,7 @@ namespace ShapesApp
             {
                 case "Line":
                     // Create an instance of Line shape
-                    currentShape = new Line(10, 20, Width, Height, "Line");
+                    currentShape = new Line(100, 200, Width, Height, "Line");
                     break;
                 case "Circle":
                     // Create an instance of Circle shape with a random radius between 40 and 100
@@ -555,42 +582,59 @@ namespace ShapesApp
             }
         }
 
-
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton1.Checked)
-            {
-                // Show splitContainer1.Panel2 and splitContainer2.Panel1
-                splitContainer2.Panel1.Visible = true;
-
-                // Hide the list box containing shape info if it exists
-                if (infoList != null)
-                {
-                    infoList.Visible = false;
-                }
-            }
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton2.Checked)
-            {
-
-
-                // Show the list box containing shape info
-                infoList.Visible = true;
-            }
-        }
-
-
-
         private void infoList_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Show splitContainer1.Panel2 and splitContainer2.Panel1
+            splitContainer2.Panel1.Visible = true;
+
+            // Hide the list box containing shape info if it exists
+            if (infoList != null)
+            {
+                refresh_button.Visible = false;
+                infoList.Visible = false;
+            }
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Show the list box containing shape info
+            refresh_button.Visible = true;
+            infoList.Visible = true;
+
+        }
+
+        private void refresh_button_Click(object sender, EventArgs e)
+        {
+            infoList.Items.Clear();
+            // Display "Refreshing" for a second
+            Timer timer = new Timer();
+            timer.Interval = 1000; // 1 second
+            RefreshStatusLabel.Visible = true;
+            timer.Tick += (s, _) =>
+            {
+                timer.Stop();
+                timer.Dispose();
+
+                // Call the update method
+                updateListOfShapes();
+                RefreshStatusLabel.Visible = false;
+
+            };
+            timer.Start();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }

@@ -30,8 +30,10 @@
         private PictureBox Triangle;
         private PictureBox Rectangle;
         private ListBox listBoxShapes;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
         private ListBox infoList;
+        private Button info_button;
+        private Button draw_button;
+        private Button refresh_button;
+        private Label RefreshStatusLabel;
     }
 }
